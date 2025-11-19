@@ -3,7 +3,6 @@ name: Build and publish multi-arch image to GHCR on release
 on:
   release:
     types: [published]
-  workflow_dispatch:
 
 permissions:
   contents: read
