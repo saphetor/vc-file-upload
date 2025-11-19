@@ -1,0 +1,48 @@
+default_install_hook_types: [pre-commit, commit-msg]
+repos:
+-   repo: https://github.com/pycqa/isort
+    rev: 6.0.1
+    hooks:
+    -   id: isort
+        name: isort (python)
+
+-   repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+    -   id: black
+        language_version: python3
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+    -   id: flake8
+
+-   repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.10.0
+    hooks:
+    -   id: commitizen
+        stages: [commit-msg]
+
+-   repo: local
+    hooks:
+      - id: poetry-lock
+        name: poetry lock
+        entry: poetry lock --no-update
+        language: system
+        files: ^pyproject\.toml$
+        pass_filenames: false
+        require_serial: true
+      - id: poetry-export
+        name: poetry export
+        entry: bash -c 'poetry export -f requirements.txt -o requirements.txt'
+        language: system
+        files: ^poetry\.lock$
+        pass_filenames: false
+        require_serial: true
+      - id: poetry-export-dev
+        name: poetry export dev dependencies
+        entry: bash -c 'poetry export -f requirements.txt --only dev -o requirements-dev.txt'
+        language: system
+        files: ^poetry\.lock$
+        pass_filenames: false
+        require_serial: true

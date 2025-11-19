@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "vc-file-upload"
+version = "0.1.0"
+description = "A library and tool for uploading files from local filesystem or retrieve files from cloud storage to the VarSome Clinical Platform"
+authors = ["Christos Kopanos <christos.kopanos@saphetor.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+vc_file_upload = "vc_file_upload.cli.transfer_files:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fsspec = {extras = ["s3", "gcs", "oci"], version = "^2025.10.0"}
+adlfs = "^2025.8.0"
+pyOpenSSL = "^24.0"
+requests = "^2.32"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^6.0.1"
+black = "^25.1.0"
+flake8 = "^7.3.0"
+pre-commit = "^4.2.0"
+pytest = "^8.4.1"
+pytest-cov = "^6.2.1"
+commitizen = "^4.10.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+branch = true
+
+[tool.pytest.ini_options]
+minversion = "8.4"
+pythonpath = ". vc_file_upload"
+addopts = "-ra -q --cov=vc_file_upload --cov-config=pyproject.toml"
+testpaths = ["tests"]

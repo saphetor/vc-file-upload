@@ -1,0 +1,11 @@
+[tool.commitizen]
+tag_format = "v$major.$minor.$patch$prerelease"
+version = "0.1.0"
+version_files = [
+    "pyproject.toml:version",
+    "vc_file_upload/__init__.py:__version__",
+]
+github_repo = "saphetor/vc-file-upload"
+update_changelog_on_bump = true
+gpg_sign = false
+annotated_tag = true
