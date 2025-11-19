@@ -48,7 +48,21 @@ docker build -t vc-file-upload:{{version}} .
 - Or pull the prebuilt images from the GitHub Container Registry (GHCR):
 
 ```bash
-docker pull ghcr.io/saphetor/vc-file-upload:{{version}}
+docker pull ghcr.io/saphetor/vc-file-upload:latest
+```
+
+Note on running from the registry image:
+
+- When you fetch the image from the registry, run it using the fully qualified name:
+
+```bash
+docker run ghcr.io/saphetor/vc-file-upload
+```
+
+- By default, Docker will use the latest tag if no tag is provided. For clarity, you can include the tag explicitly:
+
+```bash
+docker run ghcr.io/saphetor/vc-file-upload:latest
 ```
 
 ## CLI usage at a glance
@@ -62,7 +76,7 @@ vc_file_upload --help
 - With Docker:
 
 ```bash
-docker run --rm vc-file-upload:{{version}} --help
+docker run --rm ghcr.io/saphetor/vc-file-upload:latest --help
 ```
 
 ## Examples with Docker
@@ -71,13 +85,13 @@ docker run --rm vc-file-upload:{{version}} --help
 Mount your local folder into the container and point to it with the LOCAL backend.
 
 ```bash
-docker run --rm --env-file .env -v /local_folder:/data vc-file-upload:{{version}} --backend LOCAL /data
+docker run --rm --env-file .env -v /local_folder:/data ghcr.io/saphetor/vc-file-upload:latest --backend LOCAL /data
 ```
 
 ### AWS S3
 
 ```bash
-docker run --rm --env-file .env vc-file-upload:{{version}} --backend AWS bucket/folder
+docker run --rm --env-file .env ghcr.io/saphetor/vc-file-upload:latest --backend AWS bucket/folder
 ```
 
 ### Google Cloud Storage
@@ -85,7 +99,7 @@ Mind permissions for the credentials file inside the container.
 
 ```bash
 docker run --rm --env-file .env -v /service_account.json:/credentials.json \
-  vc-file-upload:{{version}} --backend GCP bucket/folder
+  ghcr.io/saphetor/vc-file-upload:latest --backend GCP bucket/folder
 ```
 
 Note: ensure the container user can read /credentials.json.
@@ -93,7 +107,7 @@ Note: ensure the container user can read /credentials.json.
 ### Azure Blob Storage
 
 ```bash
-docker run --rm --env-file .env vc-file-upload:{{version}} --backend AZURE container/folder
+docker run --rm --env-file .env ghcr.io/saphetor/vc-file-upload:latest --backend AZURE container/folder
 ```
 
 ### Oracle Cloud Infrastructure (OCI) Object Storage
@@ -101,7 +115,7 @@ Mount your ~/.oci or chosen OCI config directory.
 
 ```bash
 docker run --rm --env-file .env -v /path-to/.oci/:/path-to/.oci/ \
-  vc-file-upload:{{version}} --backend OCI bucket@namespace/folder
+  ghcr.io/saphetor/vc-file-upload:latest --backend OCI bucket@namespace/folder
 ```
 
 ## Environment variables
