@@ -11,7 +11,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository.toLower() }}
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
@@ -41,9 +41,11 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             # If the release was created from a semver tag, produce semver tags
-            type=semver,pattern={{version}},enable=${{ startsWith(github.event.release.tag_name, 'v') || matches(github.event.release.tag_name, '^[0-9].*') }}
-            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.event.release.tag_name, 'v') || matches(github.event.release.tag_name, '^[0-9].*') }}
-            type=semver,pattern={{major}},enable=${{ startsWith(github.event.release.tag_name, 'v') || matches(github.event.release.tag_name, '^[0-9].*') }}
+            # We consider tags starting with 'v' (e.g., v1.2.3) or containing a dot (e.g., 1.2.3) as semver-like.
+            # Explicit patch-level tag (e.g., 1.2.3)
+            type=semver,pattern={{version}},enable=${{ startsWith(github.event.release.tag_name, 'v') || contains(github.event.release.tag_name, '.') }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.event.release.tag_name, 'v') || contains(github.event.release.tag_name, '.') }}
+            type=semver,pattern={{major}},enable=${{ startsWith(github.event.release.tag_name, 'v') || contains(github.event.release.tag_name, '.') }}
             # Always tag the exact release tag
             type=raw,value=${{ github.event.release.tag_name }}
             # Also publish latest for convenience
