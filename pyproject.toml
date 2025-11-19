@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vc-file-upload"
-version = "0.2.0"
+version = "0.2.1"
 description = "A library and tool for uploading files from local filesystem or retrieve files from cloud storage to the VarSome Clinical Platform"
 authors = ["Christos Kopanos <christos.kopanos@saphetor.com>"]
 readme = "README.md"
