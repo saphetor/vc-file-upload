@@ -18,7 +18,7 @@ logger = get_library_logger()
 
 DEFAULT_BASE_URL = "https://ch.clinical.varsome.com"
 MAX_SINGLE_UPLOAD_BYTES = 100 * 1024 * 1024
-MULTIPART_CHUNK_BYTES = 50 * 1024 * 1024
+MULTIPART_CHUNK_BYTES = 20 * 1024 * 1024
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -39,14 +39,6 @@ class VarSomeClinicalFileUploader:
     clinical_base_url: str = DEFAULT_BASE_URL
     max_single_file_upload_size_bytes: int = MAX_SINGLE_UPLOAD_BYTES
     multipart_upload_chunk_size: int = MULTIPART_CHUNK_BYTES
-
-    def __post_init__(self):
-        """
-        Due to an issue with the clinical API, we need to disable the multipart upload
-        for the time being.
-        :return:
-        """
-        self._multi_part_upload_enabled = False
 
     @contextlib.contextmanager
     def _http_client_session(self):
@@ -187,8 +179,6 @@ class VarSomeClinicalFileUploader:
         """
         if file_size is None:
             return None
-        if not self._multi_part_upload_enabled:
-            return self._upload_local_file(file_path, file_name, client)
 
         if file_size <= self.max_single_file_upload_size_bytes:
             return self._upload_local_file(file_path, file_name, client)
@@ -335,16 +325,20 @@ class VarSomeClinicalFileUploader:
                             return upload_id
                         start = end
                     except UploadException as e:
-                        if e.status_code != 416:
-                            logger.exception(
-                                "Failed to upload local file",
-                                extra={
-                                    "file_path": file_path,
-                                    "file_name": file_name,
-                                    "error": str(e),
-                                },
-                            )
-                            return None
+                        if e.status_code == 416:
+                            response = e.original_exception.response
+                            if server_offset := response.json().get("offset"):
+                                start = server_offset
+                                continue
+                        logger.exception(
+                            "Failed to upload local file",
+                            extra={
+                                "file_path": file_path,
+                                "file_name": file_name,
+                                "error": str(e),
+                            },
+                        )
+                        return None
         except (IOError, OSError) as e:
             logger.exception(
                 "File read error during multipart upload",
@@ -400,6 +394,7 @@ class VarSomeClinicalFileUploader:
             response = client.post(
                 api_url, files=form_data, headers=extra_headers, params=request_params
             )
+            logger.info("Chunk upload response status: %s", response.status_code)
             response.raise_for_status()
             return response.json()["upload_id"]
         except requests.exceptions.RequestException as e:
@@ -441,7 +436,7 @@ class VarSomeClinicalFileUploader:
                 "Failed to complete multipart upload",
                 extra={
                     "upload_id": upload_id,
-                    "md5_sum": md5_sum,
+                    "md5": md5_sum,
                     "api_url": api_url,
                     "error": str(e),
                 },

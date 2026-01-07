@@ -47,13 +47,14 @@ def mock_http_session_raise_for_status_on_second_call(
     mock_session_instance = mock_http_session.return_value
     bad_response = MagicMock()
     bad_response.raise_for_status.side_effect = HTTPError(
-        "HTTP Error", response=MagicMock(status_code=416)
+        "HTTP Error", response=MagicMock(status_code=416, json=lambda: {"offset": 2})
     )
     good_response = MagicMock()
     good_response.json.return_value = success_response_json
     mock_session_instance.post.side_effect = [
         good_response,
         bad_response,
+        good_response,
         good_response,
     ]
     yield mock_http_session
@@ -389,7 +390,7 @@ def test_process_multi_part_upload(tmp_path):
                 str(p), "file.bin", 10, session
             )
         assert upload_id == "123"
-        assert session.post.call_count == 3
+        assert session.post.call_count == 4
         session.post.assert_has_calls(
             [
                 call(
@@ -425,7 +426,19 @@ def test_process_multi_part_upload(tmp_path):
                             "application/octet-stream",
                         )
                     },
-                    headers={"Content-Range": "bytes 6-10/10"},
+                    headers={"Content-Range": "bytes 2-8/10"},
+                    params={"upload_id": "123"},
+                ),
+                call(
+                    "http://example.com/sample-files/filestore-upload/add/",
+                    files={
+                        "data-file": (
+                            "file.bin",
+                            mock_bytes_io(),
+                            "application/octet-stream",
+                        )
+                    },
+                    headers={"Content-Range": "bytes 8-10/10"},
                     params={"upload_id": "123"},
                 ),
             ]

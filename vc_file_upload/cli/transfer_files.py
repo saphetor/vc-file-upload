@@ -58,7 +58,7 @@ def _create_uploader(base_url: str) -> VarSomeClinicalFileUploader:
         )
     else:
         raise ValueError(
-            "Missing VarSome Clinical API token. Set one for " "VCLIN_API_TOKEN"
+            "Missing VarSome Clinical API token. Set one for VCLIN_API_TOKEN"
         )
 
 
