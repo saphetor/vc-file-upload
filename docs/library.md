@@ -81,7 +81,6 @@ fs = FileSystem(
 
 ## Notes on multipart uploads
 
-- When using the library and enabling multipart upload paths, the response structure for multipart currently does not match the other endpoints. This is a known temporary inconsistency and will be fixed in a future version.
 - In the CLI shipped with this project, multipart uploads are currently disabled until API endpoint improvements are available.
 
 ## Backend configuration helpers

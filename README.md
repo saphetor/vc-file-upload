@@ -139,8 +139,6 @@ This container does not run as root. When binding credential files (GCP service 
 
 ## Limitations and current behavior (temporary)
 
-- Large file uploads: Multipart upload in the CLI is currently disabled, pending improvements on the corresponding API
-  endpoints.
 - Library response shape: When using the library and enabling multipart upload, the response structure does not
   currently match the other endpoints. This will be unified in a future release.
 

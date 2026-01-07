@@ -6,22 +6,6 @@ from requests.adapters import HTTPAdapter, Retry
 from vc_file_upload import __version__
 
 
-class TimeOutSession(requests.Session):
-
-    def request(self, method: str, url: str, **kwargs) -> requests.Response:
-        """
-        Override the request method to set a timeout for all requests.
-        Sensible timeouts are set to 10 seconds for the connection and
-        30 seconds for the read.
-        :param method: HTTP method (GET, POST, etc.)
-        :param url: URL for the request
-        :return: Response object
-        """
-        timeout = kwargs.get("timeout", (10, 60))
-        kwargs.setdefault("timeout", timeout)
-        return super().request(method, url, **kwargs)
-
-
 def http_session(
     token: str,
     retries: int = 5,
@@ -48,7 +32,7 @@ def http_session(
     :rtype: requests.Session
     """
     if retry_http_codes is None:
-        retry_http_codes = [503, 502, 429]
+        retry_http_codes = [504, 503, 502, 429]
 
     headers = {
         "Accept": "application/json",
@@ -56,13 +40,18 @@ def http_session(
         "User-Agent": f"vc-file-upload-client/{__version__}",
     }
     retry_policy = Retry(
-        total=retries,
+        total=None,
+        status=retries,
+        connect=2,
+        read=0,
+        redirect=0,
         backoff_factor=backoff,
         status_forcelist=retry_http_codes,
         allowed_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"],
+        other=0,
     )
     adapter = HTTPAdapter(max_retries=retry_policy)
-    session = TimeOutSession()
+    session = requests.Session()
     session.headers.update(headers)
     session.mount("http://", adapter)
     session.mount("https://", adapter)
