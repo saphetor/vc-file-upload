@@ -1,6 +1,6 @@
 [tool.commitizen]
 tag_format = "v$major.$minor.$patch$prerelease"
-version = "0.2.1"
+version = "0.3.0"
 version_files = [
     "pyproject.toml:version",
     "vc_file_upload/__init__.py:__version__",
