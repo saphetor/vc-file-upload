@@ -18,7 +18,7 @@ requests = "^2.32"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^7.0.0"
-black = "^25.12.0"
+black = "^26.3.1"
 flake8 = "^7.3.0"
 pre-commit = "^4.5.0"
 pytest = "^9.0"
