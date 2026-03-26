@@ -14,7 +14,7 @@ fsspec = {extras = ["s3", "gcs", "oci"], version = "^2025.12.0"}
 s3fs = "^2025.12.0"
 adlfs = "^2025.8.0"
 pyOpenSSL = "^24.0"
-requests = "^2.32"
+requests = "^2.33"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^7.0.0"
