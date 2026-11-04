@@ -835,9 +835,9 @@ multidict==6.7.0 ; python_version >= "3.10" and python_version < "3.15" \
     --hash=sha256:fb287618b9c7aa3bf8d825f02d9201b2f13078a5ed3b293c8f4d953917d84d5e \
     --hash=sha256:fbafe31d191dfa7c4c51f7a6149c9fb7e914dcf9ffead27dcfd9f1ae382b3885 \
     --hash=sha256:fbd18dc82d7bf274b37aa48d664534330af744e03bccf696d6f4c6042e7d19e7
-oauthlib==3.3.1 ; python_version >= "3.10" and python_version < "3.15" \
-    --hash=sha256:0f0f8aa759826a193cf66c12ea1af1637f87b9b4622d46e866952bb022e538c9 \
-    --hash=sha256:88119c938d2b8fb88561af5f6ee0eec8cc8d552b7bb1f712743136eb7523b7a1
+oauthlib==4.0.0 ; python_version >= "3.10" and python_version < "3.15" \
+    --hash=sha256:624c28c13a0a59cabf9747dfa52af63be3e512a7f2714df16e91b5b3a145e6cd \
+    --hash=sha256:efb274799819440f95b4ab3b818869f1ce9ae26c5beacba0201d1a1b76b54f86
 oci==2.164.2 ; python_version >= "3.10" and python_version < "3.15" \
     --hash=sha256:a524afc07c3e57141d3acfa95493320f332215e6f7408522e9b1d6dad00e5945 \
     --hash=sha256:a8c3947a8dcf2cd80d640c4d624a261e729adbe20c44891ca58360a02a104899
