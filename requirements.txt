@@ -155,9 +155,9 @@ azure-storage-blob==12.28.0 ; python_version >= "3.10" and python_version < "3.1
 botocore==1.41.5 ; python_version >= "3.10" and python_version < "3.15" \
     --hash=sha256:0367622b811597d183bfcaab4a350f0d3ede712031ce792ef183cabdee80d3bf \
     --hash=sha256:3fef7fcda30c82c27202d232cfdbd6782cb27f20f8e7e21b20606483e66ee73a
-certifi==2026.1.4 ; python_version >= "3.10" and python_version < "3.15" \
-    --hash=sha256:9943707519e4add1115f44c2bc244f782c0249876bf51b6599fee1ffbedd685c \
-    --hash=sha256:ac726dd470482006e014ad384921ed6438c457018f4b3d204aea4281258b2120
+certifi==2026.10.18 ; python_version >= "3.10" and python_version < "3.15" \
+    --hash=sha256:73191c47aaa79da394e8fee2dbc2ec827432cab56311122c9e47abf79e390f62 \
+    --hash=sha256:b9995d97b64d0431a5af837d8ca8cd6238104d1f319f04bd93ea43124d6c861e
 cffi==2.0.0 ; python_version >= "3.10" and python_version < "3.15" \
     --hash=sha256:00bdf7acc5f795150faa6957054fbbca2439db2f775ce831222b66f192f03beb \
     --hash=sha256:07b271772c100085dd28b74fa0cd81c8fb1a3ba18b21e03d7c27f3436a10606b \
